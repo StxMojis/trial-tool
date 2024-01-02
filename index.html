@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Emoji Availability Checker</title>
+    <style>
+        .result {
+            font-size: 20px;
+            margin-top: 20px;
+        }
+
+        .available {
+            color: green;
+        }
+
+        .not-available {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h2>Emoji Availability Checker</h2>
+    <input type="text" id="emojiInput" placeholder="Enter emoji">
+    <button onclick="checkEmoji()">Check Availability</button>
+    <div id="result" class="result"></div>
+
+    <script>
+        function checkEmoji() {
+            const emoji = document.getElementById('emojiInput').value;
+
+            fetch('https://script.google.com/macros/s/AKfycbzIZYs82Foa0Zs85Tck5KwqWw55M616UWckjo6xUhea6oE2m-S5NZLGtDLXyW2YZgIl_g/exec?emoji=' + encodeURIComponent(emoji))
+            .then(response => response.json())
+            .then(data => {
+                const resultDiv = document.getElementById('result');
+                if (data.isAvailable) {
+                    resultDiv.innerHTML = `${emoji} is available &#10004;`;
+                    resultDiv.classList.add('available');
+                    resultDiv.classList.remove('not-available');
+                } else {
+                    resultDiv.innerHTML = `${emoji} is not available &#10008;`;
+                    resultDiv.classList.add('not-available');
+                    resultDiv.classList.remove('available');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>
